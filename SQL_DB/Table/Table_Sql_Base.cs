@@ -217,8 +217,15 @@ namespace SQL_DB
                 object cxO = cxProp.GetValue(cxItem);
                 if (cxO!=null)
                 {
-                    cxR = cxO.ToString();
-                    if (cxProp.PropertyType==typeof(string)) cxR=$"'{cxR}'";
+                    if (cxProp.PropertyType.IsEnum)
+                    {
+                        cxR=Convert.ToInt32(cxO).ToString();
+                    }
+                    else
+                    {
+                        cxR = cxO.ToString();
+                        if (cxProp.PropertyType==typeof(string)) cxR=$"'{cxR}'";
+                    }
                     return cxR;
                 }
                 else return "NULL";

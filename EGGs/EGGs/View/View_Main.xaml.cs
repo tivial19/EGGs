@@ -19,14 +19,15 @@ namespace EGGs
     {
         czVM_APP_Info _VM_App;
         czVM_Work _VM_Work;
-
-        public czView_Main(czVM_Work cxVM_Work, czVM_APP_Info cxVM_App)
+        readonly czIAPP_base _App_base;
+        public czView_Main(czVM_Work cxVM_Work, czVM_APP_Info cxVM_App, czIAPP_base app_base)
         {
             InitializeComponent();
 
             _VM_App = cxVM_App;
             _VM_Work = cxVM_Work;
             _VM_Work._View_Item_Show = cfShow_View_Item;
+            _App_base=app_base;
 
             BindingContext = cxVM_Work;
 
@@ -34,6 +35,11 @@ namespace EGGs
             btUpdate.BindingContext = cxVM_App;
         }
 
+        protected override bool OnBackButtonPressed()
+        {
+            _App_base.cfExit();
+            return true;
+        }
 
         private async void cfShow_View_Item(czItem cxTable)
         {

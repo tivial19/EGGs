@@ -29,7 +29,7 @@ namespace cpWORK
 
         public czDB(czIAPP_Info cxApp, czISerializer cxSer) : base(cfGet_Connection(cxApp))
         {
-            tbl_Main=new czTable_Sql_Base<czTable_Data>(_Conn.cfGet_Connection, "Main");
+            tbl_Main=new czTable_Sql_Base<czTable_Data>(_Conn.cfGet_Connection, "czTable");
             _Serilizer=cxSer;
             ccFile_json = Path.Combine(cxApp.Path_App, Path.GetFileNameWithoutExtension(File)+".txt");
         }
