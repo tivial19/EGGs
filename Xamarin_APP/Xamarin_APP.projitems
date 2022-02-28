@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>091eda28-12e4-47c4-8a61-f15950856cbf</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>cpXamarin_APP</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)APP\APP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\APP_TCP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\APP_Yandex.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\IActivity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Convertors\System.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Convertors\Colors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static_Info.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\DatePicker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\PickerCustom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\Entry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\ContentPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\PickerCustom.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)View\PickerCustomTop.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)View\PickerCustom.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)View\PickerCustomTop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

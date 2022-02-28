@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xa:czPickerCustom_Base xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:xa="clr-namespace:cpXamarin_APP"
+             mc:Ignorable="d"
+             x:Name="CV"
+             x:Class="cpXamarin_APP.czPickerCustom">
+    <ContentView.Content>
+        <Grid ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <!--<StackLayout Orientation="Horizontal">-->
+            <Label Grid.Row="0" Grid.Column="0" x:Name="lblText" Text="{Binding TextLabel, Source={Reference CV}}" VerticalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="btnSelect"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <xa:czEntry Grid.Row="0" Grid.Column="1"    x:Name="txtEnter"
+                                                        Value="{Binding Value, Source={Reference CV} }"
+             />
+
+            <!--<Button Text="..." Clicked="btnSelect" WidthRequest="50" BackgroundColor="{Binding Color, Source={Reference CV}}" />-->
+        <!--</StackLayout>-->
+        </Grid>
+    </ContentView.Content>
+</xa:czPickerCustom_Base>

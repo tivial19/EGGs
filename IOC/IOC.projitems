@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>96d57cb5-3cae-4571-91b1-821faddb06a8</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>cpIOC</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Autofac\Autofac_Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Autofac\Autofac_Register_AUTO.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Autofac\Autofac_Register_Base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Autofac\Autofac_Register.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Autofac\Ext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IIOC_Register.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xa:czContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:xa="clr-namespace:cpXamarin_APP"
+             x:Class="EGGs.czView_Item"
+             x:Name="cpMain">
+    <ContentPage.Content>
+        
+        <StackLayout>
+            <Label Text="{Binding id, StringFormat='id={0}'}" FontSize="20" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Start"/>
+            <Label Text="{Binding id_Date, StringFormat='Создан {0}'}" FontSize="20" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" VerticalOptions="Start"/>
+            <StackLayout Orientation="Vertical" VerticalOptions="EndAndExpand">
+                <DatePicker FontSize="20" Date="{Binding Date, Mode=TwoWay}"/>
+                <Entry FontSize="20" Text="{Binding Count_1, Mode=TwoWay}" Placeholder="Стая 1" PlaceholderColor="LightGray"/>
+                <Entry FontSize="20" Text="{Binding Count_2, Mode=TwoWay}" Placeholder="Стая 2" PlaceholderColor="LightGray"/>
+                <Entry FontSize="20" Text="{Binding Money, Mode=TwoWay}" Placeholder="Доход" PlaceholderColor="LightGray"/>
+                <Entry FontSize="20" Text="{Binding Comment, Mode=TwoWay}" Placeholder="Comment" PlaceholderColor="LightGray"/>
+
+                <Grid VerticalOptions="EndAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="10*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" Grid.Column="0" Text="Отмена" Clicked="btnHide"/>
+                    <Button Grid.Row="0" Grid.Column="1" Text="ОК" Clicked="btnHide" Command="{Binding ccView_Item_OK}" CommandParameter="{Binding BindingContext, Source={Reference cpMain}}" x:Name="btnOK"/>
+                </Grid>
+            </StackLayout>
+        </StackLayout>
+        
+    </ContentPage.Content>
+</xa:czContentPage>

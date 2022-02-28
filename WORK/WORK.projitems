@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>d8b1ad6d-2101-45a7-84a0-69d976c3d6ee</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>cpWORK</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\Filter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\ITable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Table.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\Item.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\IWork.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\WORK.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Module\Json_Convert.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Module\DB.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static_Info.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VM\VM_Work.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EGGs.Android", "EGGs\EGGs.Android\EGGs.Android.csproj", "{567A9057-0146-4B48-AD4D-4EFFDBD57B10}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EGGs", "EGGs\EGGs\EGGs.csproj", "{CE173461-BCF7-4436-B14D-6F9BC8E5EC29}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WORK", "WORK\WORK.shproj", "{D8B1AD6D-2101-45A7-84A0-69D976C3D6EE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ADD", "ADD\ADD.shproj", "{1A2CB2EE-4035-4AC1-858B-A48DC4F786CC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "IOC", "IOC\IOC.shproj", "{96D57CB5-3CAE-4571-91B1-821FADDB06A8}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SQL_DB", "SQL_DB\SQL_DB.shproj", "{E8DE2BB1-42A6-465E-A34F-4F9A0A199D4B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Xamarin_APP", "Xamarin_APP\Xamarin_APP.shproj", "{091EDA28-12E4-47C4-8A61-F15950856CBF}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Xamarin_APP\Xamarin_APP.projitems*{091eda28-12e4-47c4-8a61-f15950856cbf}*SharedItemsImports = 13
+		ADD\ADD.projitems*{1a2cb2ee-4035-4ac1-858b-a48dc4f786cc}*SharedItemsImports = 13
+		IOC\IOC.projitems*{96d57cb5-3cae-4571-91b1-821faddb06a8}*SharedItemsImports = 13
+		ADD\ADD.projitems*{ce173461-bcf7-4436-b14d-6f9bc8e5ec29}*SharedItemsImports = 5
+		IOC\IOC.projitems*{ce173461-bcf7-4436-b14d-6f9bc8e5ec29}*SharedItemsImports = 5
+		SQL_DB\SQL_DB.projitems*{ce173461-bcf7-4436-b14d-6f9bc8e5ec29}*SharedItemsImports = 5
+		WORK\WORK.projitems*{ce173461-bcf7-4436-b14d-6f9bc8e5ec29}*SharedItemsImports = 5
+		Xamarin_APP\Xamarin_APP.projitems*{ce173461-bcf7-4436-b14d-6f9bc8e5ec29}*SharedItemsImports = 5
+		WORK\WORK.projitems*{d8b1ad6d-2101-45a7-84a0-69d976c3d6ee}*SharedItemsImports = 13
+		SQL_DB\SQL_DB.projitems*{e8de2bb1-42a6-465e-a34f-4f9a0a199d4b}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{567A9057-0146-4B48-AD4D-4EFFDBD57B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{567A9057-0146-4B48-AD4D-4EFFDBD57B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{567A9057-0146-4B48-AD4D-4EFFDBD57B10}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{567A9057-0146-4B48-AD4D-4EFFDBD57B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{567A9057-0146-4B48-AD4D-4EFFDBD57B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{567A9057-0146-4B48-AD4D-4EFFDBD57B10}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CE173461-BCF7-4436-B14D-6F9BC8E5EC29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE173461-BCF7-4436-B14D-6F9BC8E5EC29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE173461-BCF7-4436-B14D-6F9BC8E5EC29}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CE173461-BCF7-4436-B14D-6F9BC8E5EC29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE173461-BCF7-4436-B14D-6F9BC8E5EC29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE173461-BCF7-4436-B14D-6F9BC8E5EC29}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {03DBB983-CF5D-4601-A3C2-0DCCF63BF073}
+	EndGlobalSection
+EndGlobal

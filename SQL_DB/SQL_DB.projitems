@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>e8de2bb1-42a6-465e-a34f-4f9a0a199d4b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SQL_DB</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DbConnection\DbConnection_MSQL_Common.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbConnection\DB_Type.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbConnection\IDbConnection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DB_Access\DB_Access_Core.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DB_Access\DB_Creator\DB_Table_Creator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\Data\Items2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\Table_Test.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Attributes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbConnection\DbConnection_Core.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbConnection\DbConnection_MSQL.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbConnection\DbConnection_MSQLocal.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Table\Table_Sql_Join.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Table\Table_Sql_Core.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Table_Types.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\DB_Creator_test.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\Data\Items.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\Data\Simple.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\Data\Table_For_Create.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\DB_Simple.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DbConnection\DbConnection_Lite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Example\DB_Test.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Table\Table_Sql_Base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DB_Access\DB_Creator\Table_Cmd_Create_Base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DB_Access\DB_Creator\Table_Cmd_Create_Core.cs" />
+  </ItemGroup>
+</Project>

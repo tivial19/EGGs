@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1a2cb2ee-4035-4ac1-858b-a48dc4f786cc</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>cpADD</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IJSON\NewtonJson_InterfaceContractResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IJSON\System.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IJSON\UTF8.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Notify_Simple.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\ISerializer\czSerializer_JSON.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\Log\ILog.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\ObservableRemoveCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\SaverOPT\ISaverOPT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\SaverOPT\SaveOPT.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\ITrace\ITrace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\APP_test.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\APP_base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\Data\APP_Exception.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\APP_Info.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\Log\Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\SaverOPT\SaveOPT_db.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\ITrace\Trace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APP\IAPP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\Attributes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IAsyncModuleStartControl\AsyncModuleStartControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IAsyncModuleStartControl\IAsyncModuleStartControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IJSON\IJSON.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IJSON\NewtonJson.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IMSG\IMSG.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\IMSG\MSG_Output.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\data.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\IRemoteFileServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\IRemoteFileServer_base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\MOQ.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\Yandex\YandexDisk_old.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\ISerializer\ISerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ability\ISerializer\Serializer_txt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\StringText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\ICommand\CMD_Base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\ICommand\CMD_CanRun.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\ICommand\CMD_CanStop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\ICommand\CMD_Simple.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\ICommand\ICMD.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\APP_model.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\VM\VM.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Objects\Notify_Object.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IOC\IIOC_Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\Yandex\YandexDisk_base.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\Yandex\YandexDisk_app.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\Yandex\Yandex_Base_Nagaev.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteFileServer\Yandex\Yandex_Base_RSarov.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static\EXT\Binding.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static\EXT\Collection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static\EXT\Exception.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static\EXT\ExpressionCombiner.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static\EXT\Objects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static\Reflection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Static\Static_Info.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enties\VM\VM_APP_Info.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)APP\Data\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Enties\VM\" />
+  </ItemGroup>
+</Project>

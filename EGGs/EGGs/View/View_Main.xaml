@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xa:czCarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:xa="clr-namespace:cpXamarin_APP"
+             x:Class="EGGs.czView_Main">
+
+    <ContentPage>
+        <StackLayout>
+
+            <Label TextColor="Black" FontSize="14" Text="{Binding Status}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+            <Label TextColor="Black" FontSize="14" Text="{Binding Status_View}" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+
+            <ListView x:Name="lbMain" Margin="0,5,0,0" CachingStrategy="RecycleElement" ItemsSource="{Binding View}" SelectionMode="Single" SelectedItem="{Binding Selected_Item, Mode=TwoWay}" android:ListView.IsFastScrollEnabled="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="6*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Margin="5,10,0,0" Grid.Row="0" Grid.Column="0" Text="{Binding  Date, StringFormat='{}{0:dd.MM.yy}'}" FontSize="16" TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                <Label Margin="0,10,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding  Comment}" FontSize="16" TextColor="Black"  VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                <!--<Label Margin="7,10,0,0" Grid.Row="0" Grid.Column="2" Text="{Binding  Count_1, StringFormat='№1 {0}'}" FontSize="16" TextColor="Black"  VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                <Label Margin="7,10,0,0" Grid.Row="0" Grid.Column="3" Text="{Binding  Count_2, StringFormat='№2 {0}'}" FontSize="16" TextColor="Black"  VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>-->
+                                <Label Margin="7,10,0,0" Grid.Row="0" Grid.Column="2" Text="{Binding  Count_1}" FontSize="16" TextColor="Black"  VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                <Label Margin="7,10,0,0" Grid.Row="0" Grid.Column="3" Text="{Binding  Count_2}" FontSize="16" TextColor="Black"  VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                <Label Margin="7,10,0,0" Grid.Row="0" Grid.Column="4" Text="{Binding  Money, StringFormat='{0:C0}'}" FontSize="16" TextColor="Black"  VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                
+
+                            </Grid>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+
+
+
+
+
+
+
+
+            <Grid VerticalOptions="End">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <SearchBar Grid.Row="0" Grid.Column="0" Placeholder="Введите текст"  SearchCommand="{Binding ccFind}" Text="{Binding Filter.Text, Mode=TwoWay}" Margin="0,0,0,0"/>
+                <!--<CheckBox Grid.Row="0" Grid.Column="1" Color="Black"  IsChecked="{Binding isSort_Reverse, Mode=TwoWay}"/>-->
+                <Button Grid.Row="0" Grid.Column="1" Text="=>"  Command="{Binding ccFind}" WidthRequest="70"/>
+            </Grid>
+
+
+
+            <Grid VerticalOptions="End">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <DatePicker Grid.Row="0" Grid.Column="0" Date="{Binding Filter.Date_Start, Mode=TwoWay}"/>
+                <DatePicker Grid.Row="0" Grid.Column="1" Date="{Binding Filter.Date_End, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="0" Grid.Column="2" Color="Black"  IsChecked="{Binding Filter.isDate_Used, Mode=TwoWay}"/>
+            </Grid>
+
+
+
+
+
+            <Grid VerticalOptions="End" ColumnSpacing="-7" Margin="0,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Button Grid.Row="0" Grid.Column="0" Text="-"  Command="{Binding ccDelete}" CommandParameter="{Binding SelectedItem, Source={Reference lbMain}}"/>
+                <Button Grid.Row="0" Grid.Column="1" Text="Ред." Command="{Binding ccView_Item_Show}" CommandParameter="1"/>
+                <Button Grid.Row="0" Grid.Column="2" Text="+" Command="{Binding ccView_Item_Show}"/>
+                <Button Grid.Row="0" Grid.Column="3" Text="ВСЕ"  Command="{Binding ccLoad_ALL}"/>
+                <Button Grid.Row="0" Grid.Column="4" Text="Выход" Command="{Binding ccExit}" x:Name="btnExit" />
+            </Grid>
+            
+            
+            
+            
+            
+            
+        </StackLayout>
+        
+        
+        
+    </ContentPage>
+
+
+
+
+
+
+    <ContentPage>
+        <StackLayout>
+            <TableView>
+                <TableRoot>
+                    <TableSection Title="НАСТРОЙКИ">
+                        <SwitchCell Text="Порядок сортировки по дате последовательный" On="{Binding isSort_Reverse, Mode=TwoWay}"/>
+                        <SwitchCell Text="Добавлять при поиске % в начало" On="{Binding isAdd_Auto_Symbol_to_Start, Mode=TwoWay}"/>
+                        <SwitchCell Text="Добавлять при поиске % в конец" On="{Binding isAdd_Auto_Symbol_to_End, Mode=TwoWay}"/>
+                        <SwitchCell Text="Поиск использовать как Where напрямую" On="{Binding isUse_Where_directly, Mode=TwoWay}"/>
+                        <ViewCell>
+                            <Button Text="Show Data" Command="{Binding ccShow_Data_Fields}"/>
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection Title="Команды удаленные">
+                        <ViewCell>
+                            <Grid VerticalOptions="End" ColumnSpacing="0" Margin="0,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Button Grid.Row="0" Grid.Column="0" Text="Обновление"  Command="{Binding ccUpdate}" x:Name="btUpdate"/>
+                                <Button Grid.Row="0" Grid.Column="1" Text="Загр." Command="{Binding ccRead_Data_Remote}"/>
+                                <Button Grid.Row="0" Grid.Column="2" Text="Сохр." Command="{Binding ccWrite_Data_Remote}"/>
+                            </Grid>
+                        </ViewCell>
+                    </TableSection>
+                    <TableSection Title="Команды локальные">
+                        <ViewCell>
+                            <Grid VerticalOptions="End" ColumnSpacing="0" Margin="0,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+
+                                <Button Grid.Row="0" Grid.Column="0" Text="Restore Json" Command="{Binding ccRestore}"/>
+                                <Button Grid.Row="0" Grid.Column="1" Text="BackUp All"  Command="{Binding ccBackUp}"  />
+                                <Button Grid.Row="0" Grid.Column="2" Text="BackUp View"  Command="{Binding ccBackUp}" CommandParameter="true" />
+                            </Grid>
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+
+
+        </StackLayout>
+    </ContentPage>
+
+
+
+
+
+
+
+</xa:czCarouselPage>
