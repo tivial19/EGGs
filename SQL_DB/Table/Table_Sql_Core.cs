@@ -7,10 +7,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQL_DB
+namespace SQL_DB.Table
 {
     public class czTable_Sql_Core
     {
+       
         public string Table_Name { get; }
 
         protected readonly Func<IDbConnection> _conn;

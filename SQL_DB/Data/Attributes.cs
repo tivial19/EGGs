@@ -145,9 +145,13 @@ namespace SQL_DB.Data
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 	public class czaForeignKeyAttribute : czaTable_ValueAttribute
 	{
+		public string Table_Name { get; }
+		public string Id_column_Name { get; }
+
 		public czaForeignKeyAttribute(string cxReference_Table, string cxReference_Column) : base(string.Format("REFERENCES {0}({1})", cxReference_Table, cxReference_Column))
 		{
-
+			Table_Name=cxReference_Table;
+			Id_column_Name=cxReference_Column;
 		}
 	}
 
@@ -162,7 +166,7 @@ namespace SQL_DB.Data
 	[AttributeUsage(AttributeTargets.Property)]
 	public class czaPrimaryKeyAttribute : czaTableAttribute
 	{
-		public bool AutoIncrement = false;
+		public bool AutoIncrement { get; } = false;
 
 		readonly bool _New_Id_Not_Always_New;
 		readonly int _ai_type;//0=no auto, 1 - standart, 2 - IDENTITY(x,y)

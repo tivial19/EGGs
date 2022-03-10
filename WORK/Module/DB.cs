@@ -27,6 +27,8 @@ namespace cpWORK
         czISerializer _Serilizer;
         readonly string ccFile_json;
 
+        readonly czSQL_cmd Sql_cmd = new czSQL_cmd();
+
         public czDB(czIAPP_Info cxApp, czISerializer cxSer) : base(cfGet_Connection(cxApp))
         {
             tbl_Main=new czTable_Sql_Base<czTable_Data>(_Conn.cfGet_Connection, "czTable");
@@ -92,8 +94,8 @@ namespace cpWORK
 
             List<string> cxQuery_Where_And = new List<string>();
 
-            if (!string.IsNullOrWhiteSpace(cxFilter.Text)) cxQuery_Where_And.Add(cfGet_Where_Colums_Words_AND(cxFilter.Text.Split(" ",StringSplitOptions.RemoveEmptyEntries), cfGet_Columns(), cxAdd_Start, cxAdd_End));
-            if (cxFilter.isDate_Used) cxQuery_Where_And.Add(cfGet_Date_Query(nameof(cxTable.Date), cxFilter.Date_End, cxFilter.Date_Start));
+            if (!string.IsNullOrWhiteSpace(cxFilter.Text)) cxQuery_Where_And.Add(Sql_cmd.cfGet_Where_Colums_Words_AND(cfGet_Columns(), cxFilter.Text.Split(" ", StringSplitOptions.RemoveEmptyEntries), cxAdd_Start, cxAdd_End));
+            if (cxFilter.isDate_Used) cxQuery_Where_And.Add(Sql_cmd.cfGet_Where_Date(nameof(cxTable.Date), cxFilter.Date_End, cxFilter.Date_Start));
 
 
 
@@ -109,35 +111,10 @@ namespace cpWORK
 
 
 
-
             string[] cfGet_Columns(czTable_Data cxTable = null)
             {
                 return new string[] { nameof(cxTable.Count_1), nameof(cxTable.Count_2), nameof(cxTable.Money), nameof(cxTable.Comment) };
             }
-
-
-            static string cfGet_Where_Colums_Words_AND(string[] cxWords, string[] cxCols, bool cxAdd_Start, bool cxAdd_End)
-            {
-                var Q = cxWords.Select(w => cfGet_Where_Colums_Word_OR(w, cxCols, cxAdd_Start, cxAdd_End));
-                string r = string.Join(" AND ", Q);
-                return "(" + r + ")";
-            }
-
-            static string cfGet_Where_Colums_Word_OR(string cxWord, string[] cxCols, bool cxAdd_Start, bool cxAdd_End)
-            {
-                //("Comment" like '%55%' or "Name" like '%35%')
-                string cxFormat_one_col = "\"{0}\" LIKE '{2}{1}{3}'";
-                var C = cxCols.Select(c => string.Format(cxFormat_one_col, c, cxWord, cxAdd_Start ? "%" : string.Empty, cxAdd_End ? "%" : string.Empty));
-                string r = string.Join(" OR ", C);
-                return "(" + r + ")";
-            }
-
-            static string cfGet_Date_Query(string cxField_Name, DateTime cxDate_End, DateTime cxDate_Start)
-            {
-                if (cxDate_End <= cxDate_Start) return $"{cxField_Name} = {cxDate_End.Ticks}";
-                else return $"{cxField_Name} >= {cxDate_Start.Ticks} AND {cxField_Name} <= {cxDate_End.Ticks}";
-            }
-
         }
 
 

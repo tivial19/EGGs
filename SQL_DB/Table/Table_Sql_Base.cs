@@ -9,21 +9,26 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SQL_DB.Data;
-
+using SQL_DB.Table;
 
 namespace SQL_DB
 {
-    public class czTable_Sql_Base<T> : czTable_Sql_Core where T : class//, czITable_Data //where T: new() //need for deleteAll
+    public class czTable_Sql_Base<T> : czTable_Sql_Core, czITable_Sql_Base//, czITable_Data //where T: new() //need for deleteAll
     {
         public Type Data_Type => typeof(T);
 
 
-        public czTable_Sql_Base(Func<IDbConnection> cxConn, string cxName=null) : base(cxConn,cxName==null ? typeof(T).Name:cxName)
+        public czTable_Sql_Base(Func<IDbConnection> cxConn, string cxName = null) : base(cxConn, cxName==null ? typeof(T).Name : cxName)
         {
 
         }
 
 
+        public string[] cfGet_Data_Fields()
+        {
+            var cxProps = cfGet_Properties_ALL_Set_noIgnore(typeof(T), BindingFlags.Public |  BindingFlags.Instance);
+            return cxProps.Select(p => p.Name).ToArray();
+        }
 
 
         public async Task<int> cfCount()
@@ -55,12 +60,14 @@ namespace SQL_DB
 
 
 
-
-
-
-        public Task<int> cfInsert(params T[] cxItems)
+        public Task<int> cfInsert(T cxItems, bool? cxPrimaryKey_Include = null)
         {
-            string[] cxPrs = cfGet_Properties_Names(typeof(T));
+            return cfInsert(new T[] { cxItems }, cxPrimaryKey_Include);
+        }
+
+        public Task<int> cfInsert(T[] cxItems, bool? cxPrimaryKey_Include = null)
+        {
+            string[] cxPrs = cfGet_Properties_Names(typeof(T), cxPrimaryKey_Include);
             string cxColumns_Names = cfGet_Columns_Names(cxPrs);
             string cxParametrs = cfGet_Parameters_Names(cxPrs);
             string cxInsert_cmd = $"INSERT INTO {Table_Name} ({cxColumns_Names}) VALUES ({cxParametrs})";
@@ -68,11 +75,11 @@ namespace SQL_DB
             return cfCMD_Execute(cxInsert_cmd, cxItems);
         }
 
-        public Task<int> cfInsert_Quick(params T[] cxItems)
+        public Task<int> cfInsert_Quick(T[] cxItems, bool? cxPrimaryKey_Include = null)
         {
-            var cxPI = cfGet_Properties_type(typeof(T));
+            var cxPI = cfGet_Properties_type(typeof(T), cxPrimaryKey_Include);
             string cxColumns_Names = cfGet_Columns_Names(cxPI);
-            string cxValues = cfGet_Columns_Value(cxPI,cxItems);
+            string cxValues = cfGet_Columns_Value(cxPI, cxItems);
             string cxInsert_cmd = $"INSERT INTO {Table_Name} ({cxColumns_Names}) VALUES {cxValues}";
 
             return cfCMD_Execute(cxInsert_cmd);
@@ -83,39 +90,41 @@ namespace SQL_DB
 
 
 
-        public Task<int> cfUpdate(params T[] cxItems)
+        public Task<int> cfUpdate(params T[] cxItems)//Update only one Item
         {
             //update czItem_Data set "Value" = @Value, "Text" = @Text where "id" = @id
             if (cxItems==null || !cxItems.Any()) throw new Exception("cfUpdate cannot Update empty");
 
             string cxId_Field = cfGet_Primary_Key();
-            string cxFormat = "\"{0}\" = @{0}";
-            return cfUpdate(string.Format(cxFormat, cxId_Field), cxItems);
+            string cxFormat = "\"{0}\" = @{0}";// where id=5
+            string cxWhere = string.Format(cxFormat, cxId_Field);
+
+            string[] cxPrs = cfGet_Properties_Names(typeof(T), false);
+            string cxParameters = string.Join(", ", cxPrs.Select(s => string.Format(cxFormat, s)));
+            return cfUpdate(cxParameters, cxWhere, cxItems);
         }
 
-        public Task<int> cfUpdate(string cxWhere, object cxParam = null)
+        public Task<int> cfUpdate(string cxParameters, string cxWhere, object cxParam = null)
         {
-            if (string.IsNullOrWhiteSpace(cxWhere)) throw new Exception("cfUpdate cannot Update empty");
+            if (string.IsNullOrWhiteSpace(cxParameters) || string.IsNullOrWhiteSpace(cxWhere)) throw new Exception("cfUpdate cannot Update empty");
             return Task.Run<int>(() =>
             {
-                string[] cxPrs = cfGet_Properties_Names(typeof(T));
-                string cxFormat = "\"{0}\" = @{0}";
-                string cxParameters = string.Join(", ", cxPrs.Select(s=>string.Format(cxFormat,s)));
-
                 string cxCMD = $"UPDATE {Table_Name} SET {cxParameters} Where {cxWhere}";
                 return cfCMD_Execute(cxCMD, cxParam);
             });
         }
 
 
+
+
         public Task<int> cfDelete(params T[] cxItems)
         {
             //delete from czItem_Data where "id" = @id
             if (cxItems==null || !cxItems.Any()) throw new Exception("cfDelete cannot delete empty");
-            
+
             string cxId_Field = cfGet_Primary_Key();
             string cxFormat = "\"{0}\" = @{0}";
-            return cfDelete(string.Format(cxFormat, cxId_Field),cxItems);
+            return cfDelete(string.Format(cxFormat, cxId_Field), cxItems);
         }
 
         public Task<int> cfDelete(string cxWhere, object cxParam = null)
@@ -170,23 +179,32 @@ namespace SQL_DB
 
         public string cfGet_Primary_Key()
         {
-            return cfGet_Field_by_Attribute<czaPrimaryKeyAttribute>(string.Empty);
+            var Qp = cfGet_Property_Attribute<czaPrimaryKeyAttribute>();
+            if(Qp?.Any()??false)
+            {
+                if(Qp.Length>1) throw new Exception("cfGet_Primary_Key: " + typeof(T).Name + " have more than one czaPrimaryKeyAttribute");
+                else return Qp.Single().Name;
+            }
+            else throw new Exception("cfGet_Primary_Key: " + typeof(T).Name + " have no czaPrimaryKeyAttribute");
         }
 
-        protected string cfGet_Foreign_Key(string cxTable_Main_Name)
+        protected (string Foreign_Key, string Foreign_Id) cfGet_Foreign_Key_Id(string cxTable_Main_Name)
         {
-            return cfGet_Field_by_Attribute<czaForeignKeyAttribute>(cxTable_Main_Name);
+            var Qp = cfGet_Property_Attribute<czaForeignKeyAttribute>();
+            if (Qp?.Any()??false)
+            {
+                var Q = Qp.Where(p => p.GetCustomAttribute<czaForeignKeyAttribute>().Table_Name==cxTable_Main_Name).Select(p=>(p.Name,p.GetCustomAttribute<czaForeignKeyAttribute>().Id_column_Name)).ToArray();
+                if (Q.Length>1) throw new Exception("cfGet_Foreign_Key: " + typeof(T).Name + "have more than one czaForeignKeyAttribute with table name " + cxTable_Main_Name);
+                return Q.Single();
+            }
+            else throw new Exception("cfGet_Foreign_Key: " + typeof(T).Name + " have no czaForeignKeyAttribute");
         }
 
-        protected string cfGet_Field_by_Attribute<A>(string cxName_Filter) where A : Attribute
+        protected PropertyInfo[] cfGet_Property_Attribute<A>() where A : Attribute
         {
             var cxProps = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.GetCustomAttribute<A>()!=null);
-            if (cxProps.Any())
-            {
-                if (!string.IsNullOrWhiteSpace(cxName_Filter)) cxProps=cxProps.Where(p => p.Name.StartsWith(cxName_Filter));
-                if (cxProps.Any()) return cxProps.First().Name;
-            }
-            throw new Exception(typeof(T).Name + " have no " + typeof(A).Name + " " + cxName_Filter);
+            if (cxProps.Any()) return cxProps.ToArray();
+            else return null;
         }
 
 
@@ -217,14 +235,18 @@ namespace SQL_DB
                 object cxO = cxProp.GetValue(cxItem);
                 if (cxO!=null)
                 {
-                    if (cxProp.PropertyType.IsEnum)
-                    {
-                        cxR=Convert.ToInt32(cxO).ToString();
-                    }
+                    if (cxProp.PropertyType.IsEnum) cxR=Convert.ToInt32(cxO).ToString();
                     else
                     {
                         cxR = cxO.ToString();
                         if (cxProp.PropertyType==typeof(string)) cxR=$"'{cxR}'";
+                        else
+                        {
+                            if (decimal.TryParse(cxR, out decimal d))
+                            {
+                                cxR = cxR.Replace(",", ".");
+                            }
+                        }
                     }
                     return cxR;
                 }
@@ -232,7 +254,7 @@ namespace SQL_DB
             }
         }
 
-        private static string cfGet_Columns_Names(PropertyInfo[] cxPI) 
+        private static string cfGet_Columns_Names(PropertyInfo[] cxPI)
         {
             string[] cxPrs = cfGet_Properties_Names(cxPI);
             return cfGet_Columns_Names(cxPrs);
@@ -269,29 +291,29 @@ namespace SQL_DB
 
 
 
-        private static string[] cfGet_Properties_Names(Type cxType) 
+        private static string[] cfGet_Properties_Names(Type cxType, bool? cxPrimaryKey_Include)
         {
-            return cfGet_Properties_type(cxType).Select(p => p.Name).ToArray();
+            return cfGet_Properties_type(cxType, cxPrimaryKey_Include).Select(p => p.Name).ToArray();
         }
 
-        private static PropertyInfo[] cfGet_Properties_type(Type cxType) 
+
+        private static PropertyInfo[] cfGet_Properties_type(Type cxType, bool? cxPrimaryKey_Include)
         {
-            Type cxIgnore_Attribute = typeof(czaIgnoreAttribute);
-            Type cxPrimary_Key_Attribute = typeof(czaPrimaryKeyAttribute);
+            BindingFlags cxBindingAttr = BindingFlags.Public | BindingFlags.Instance;
+            var Qa = cfGet_Properties_ALL_Set_noIgnore(cxType, cxBindingAttr);
 
-            var Qa = cxType.GetProperties().Where(p=> p.SetMethod!= null);
-            var Qi = Qa.Where(p => p.GetCustomAttributes(true).Any(a => a.GetType() == cxIgnore_Attribute));
-            Qa = Qa.Except(Qi);
-
-            var cxPrimary_Keys_Properties = Qa.Where(p => p.GetCustomAttributes(true).Any(a => a.GetType() == cxPrimary_Key_Attribute));
-            if(cxPrimary_Keys_Properties.Any())
+            if (cxPrimaryKey_Include!=true)
             {
-                var cxPrimary_Keys_Attributes = cxPrimary_Keys_Properties.Select(p => p.GetCustomAttribute(cxPrimary_Key_Attribute));
-                if(cxPrimary_Keys_Attributes.Any())
+                var cxPrimary_Keys_Properties = cfGet_Properties_With_Attribute<czaPrimaryKeyAttribute>(cxType, cxBindingAttr);
+                if (cxPrimary_Keys_Properties.Any())
                 {
-                    if( ((czaPrimaryKeyAttribute)cxPrimary_Keys_Attributes.First()).AutoIncrement)
+                    var cxPrimary_Keys_Attributes = cxPrimary_Keys_Properties.Select(p => p.GetCustomAttribute<czaPrimaryKeyAttribute>());
+                    if (cxPrimary_Keys_Attributes.Any())
                     {
-                        Qa=Qa.Except(cxPrimary_Keys_Properties);
+                        if (cxPrimaryKey_Include==false || (cxPrimaryKey_Include==null && cxPrimary_Keys_Attributes.First().AutoIncrement))
+                        {
+                            Qa=Qa.Except(cxPrimary_Keys_Properties);
+                        }
                     }
                 }
             }
@@ -302,6 +324,55 @@ namespace SQL_DB
 
 
 
+        private static IEnumerable<PropertyInfo> cfGet_Properties_ALL_Set_noIgnore(Type cxType, BindingFlags cxBindingAttr = BindingFlags.Public | BindingFlags.Instance)
+        {
+            var Qa = cfGet_Properties_ALL_Set(cxType, cxBindingAttr);
+            var Qi = cfGet_Properties_With_Attribute<czaIgnoreAttribute>(cxType, cxBindingAttr);
+            if (Qi.Any()) return Qa.Except(Qi);
+            else return Qa;
+        }
+
+        private static IEnumerable<PropertyInfo> cfGet_Properties_ALL_Set(Type cxType, BindingFlags cxBindingAttr = BindingFlags.Public | BindingFlags.Instance)
+        {
+            return cxType.GetProperties(cxBindingAttr).Where(p => p.SetMethod!= null);
+        }
+
+        private static IEnumerable<PropertyInfo> cfGet_Properties_With_Attribute<A>(Type cxType, BindingFlags cxBindingAttr = BindingFlags.Public | BindingFlags.Instance) where A : Attribute
+        {
+            //GetProperties() = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public;
+            return cxType.GetProperties(cxBindingAttr).Where(p => p.GetCustomAttribute<A>()!=null);
+        }
+
+
+
+
+
+
+
+        //private static PropertyInfo[] cfGet_Properties_type(Type cxType)
+        //{
+        //    Type cxIgnore_Attribute = typeof(czaIgnoreAttribute);
+        //    Type cxPrimary_Key_Attribute = typeof(czaPrimaryKeyAttribute);
+
+        //    var Qa = cxType.GetProperties().Where(p => p.SetMethod!= null);
+        //    var Qi = Qa.Where(p => p.GetCustomAttributes(true).Any(a => a.GetType() == cxIgnore_Attribute));
+        //    Qa = Qa.Except(Qi);
+
+        //    var cxPrimary_Keys_Properties = Qa.Where(p => p.GetCustomAttributes(true).Any(a => a.GetType() == cxPrimary_Key_Attribute));
+        //    if (cxPrimary_Keys_Properties.Any())
+        //    {
+        //        var cxPrimary_Keys_Attributes = cxPrimary_Keys_Properties.Select(p => p.GetCustomAttribute(cxPrimary_Key_Attribute));
+        //        if (cxPrimary_Keys_Attributes.Any())
+        //        {
+        //            if (((czaPrimaryKeyAttribute)cxPrimary_Keys_Attributes.First()).AutoIncrement)
+        //            {
+        //                Qa=Qa.Except(cxPrimary_Keys_Properties);
+        //            }
+        //        }
+        //    }
+
+        //    return Qa.ToArray();
+        //}
 
 
         //private static string[] cfGet_Properties_Names_Qua<P, I>(Type cxType) where P : Attribute where I : Attribute

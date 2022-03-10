@@ -6,7 +6,9 @@
              mc:Ignorable="d"
              xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              xmlns:xa="clr-namespace:cpXamarin_APP"
-             x:Class="EGGs.czView_Main">
+             x:Class="EGGs.czView_Main"
+             BindingContext="{Binding  _VM_Work , Source={x:Reference cpMain}}"
+             x:Name="cpMain">
 
     <ContentPage>
         <StackLayout>
@@ -106,7 +108,7 @@
                 <Button Grid.Row="0" Grid.Column="1" Text="Ред." Command="{Binding ccView_Item_Show}" CommandParameter="1"/>
                 <Button Grid.Row="0" Grid.Column="2" Text="+" Command="{Binding ccView_Item_Show}"/>
                 <Button Grid.Row="0" Grid.Column="3" Text="ВСЕ"  Command="{Binding ccLoad_ALL}"/>
-                <Button Grid.Row="0" Grid.Column="4" Text="Выход" Command="{Binding ccExit}" x:Name="btnExit" />
+                <Button Grid.Row="0" Grid.Column="4" Text="Выход" Command="{Binding _VM_App.ccExit, Source={x:Reference cpMain}}" x:Name="btnExit" />
             </Grid>
             
             
@@ -127,6 +129,7 @@
 
     <ContentPage>
         <StackLayout>
+            <Label Text="{Binding _VM_App.Title,Source={x:Reference cpMain}, Mode=OneWay}" FontSize="36" HorizontalOptions="Center"  HorizontalTextAlignment="Center"/>
             <TableView>
                 <TableRoot>
                     <TableSection Title="НАСТРОЙКИ">
@@ -150,7 +153,7 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
 
-                                <Button Grid.Row="0" Grid.Column="0" Text="Обновление"  Command="{Binding ccUpdate}" x:Name="btUpdate"/>
+                                <Button Grid.Row="0" Grid.Column="0" Text="Обновление"  Command="{Binding _VM_App.ccUpdate, Source={x:Reference cpMain}}" x:Name="btUpdate"/>
                                 <Button Grid.Row="0" Grid.Column="1" Text="Загр." Command="{Binding ccRead_Data_Remote}"/>
                                 <Button Grid.Row="0" Grid.Column="2" Text="Сохр." Command="{Binding ccWrite_Data_Remote}"/>
                             </Grid>
