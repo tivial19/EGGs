@@ -152,11 +152,7 @@ namespace cpWORK
 
 
 
-        public string[] cfGet_Data_Fields()
-        {
-            var cxProps = typeof(czTable_Data).GetProperties(BindingFlags.Public |  BindingFlags.Instance);
-            return cxProps.Select(p => p.Name).ToArray();
-        }
+
 
 
 

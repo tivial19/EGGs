@@ -227,7 +227,7 @@ namespace SQL_DB.SQL_cmd
             }
             else if (cxType == typeof(Decimal)|| cxType == typeof(Decimal?))
             {
-                return "NUMERIC";
+                return "REAL"; //return "NUMERIC"; can be like int64
             }
             else if (cxType == typeof(String) || cxType == typeof(Guid) || cxType == typeof(StringBuilder) || cxType == typeof(Uri) || cxType == typeof(UriBuilder))
             {
@@ -267,11 +267,11 @@ namespace SQL_DB.SQL_cmd
             }
             else if (cxType == typeof(Double) ||cxType == typeof(Single) || cxType == typeof(Double?) ||cxType == typeof(Single?))
             {
-                return "float";
+                return "float"; //return "real"; 
             }
             else if (cxType == typeof(Decimal) || cxType == typeof(Decimal?))
             {
-                return "numeric(10,5)";//max (18,18) default (18,0)
+                return "decimal(10,3)"; //return "numeric(10,5)";//max (18,18) default (18,0) 
             }
             else if (cxType == typeof(Guid))
             {

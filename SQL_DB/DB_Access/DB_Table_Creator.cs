@@ -61,10 +61,15 @@ namespace SQL_DB.DB_Access
 
         protected async Task cfCreate_Tables_ALL()
         {
-            var cxTables_Class = cfGet_Tables_Type<czITable_Sql_Base>(this);
+            var cxTables_Class = cfGet_All_Tables();
             if ((cxTables_Class?.Any()??false)==false) throw new Exception("cfCreate_Tables_ALL. Thre is no tables");
 
             foreach (var cxTable in cxTables_Class) await cfCreate_Table(cxTable);
+        }
+
+        protected czITable_Sql_Base[] cfGet_All_Tables()
+        {
+            return cfGet_Tables_Type<czITable_Sql_Base>(this);
 
 
 
@@ -75,8 +80,9 @@ namespace SQL_DB.DB_Access
                 if (cxProps.Any()) return cxProps.Select(p => p.GetValue(cxThis)).Cast<I>().ToArray();
                 else return null;
             }
-
         }
+
+
 
 
 

@@ -28,22 +28,18 @@ namespace SQL_DB
 
 
 
-        public Task<T0[]> cfLoad_ALL_Join()
+
+        public override async Task<T0[]> cfLoad_Join_cmd(string cxCmd)
         {
-            return cfLoad_ALL_Join<T1, T2>(_Func_Join);
+            var Qr = await _conn().QueryAsync(cxCmd, _Func_Join);
+            return Qr.ToArray();
         }
 
-        public Task<T0[]> cfLoad_Where_Join(string cxWhere)
-        {
-            return cfLoad_Where_Join<T1, T2>(cxWhere, _Func_Join);
-        }
 
 
 
 
     }
-
-
 
 
 
@@ -71,15 +67,14 @@ namespace SQL_DB
 
 
 
-        public Task<T0[]> cfLoad_ALL_Join()
+        public override async Task<T0[]> cfLoad_Join_cmd(string cxCmd)
         {
-            return cfLoad_ALL_Join<T1>(_Func_Join);
+            var Qr = await _conn().QueryAsync(cxCmd, _Func_Join);
+            return Qr.ToArray();
         }
 
-        public Task<T0[]> cfLoad_Where_Join(string cxWhere)
-        {
-            return cfLoad_Where_Join<T1>(cxWhere, _Func_Join);
-        }
+
+
 
     }
 }

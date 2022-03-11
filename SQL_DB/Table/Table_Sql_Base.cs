@@ -24,7 +24,7 @@ namespace SQL_DB
         }
 
 
-        public string[] cfGet_Data_Fields()
+        public string[] cfGet_Data_Columns()
         {
             var cxProps = cfGet_Properties_ALL_Set_noIgnore(typeof(T), BindingFlags.Public |  BindingFlags.Instance);
             return cxProps.Select(p => p.Name).ToArray();
@@ -37,18 +37,34 @@ namespace SQL_DB
             return cxC;
         }
 
-        public async Task<T[]> cfLoad_All()
+
+        public async Task<T[]> cfLoad_cmd(string cxCmd)
         {
-            var Qr = await _conn().QueryAsync<T>($"Select * From {Table_Name}");
+            var Qr = await _conn().QueryAsync<T>(cxCmd);
             return Qr.ToArray();
         }
 
-
-        public async Task<T[]> cfLoad_Where(string cxWhere)
+        public Task<T[]> cfLoad_All()
         {
-            var Qr = await _conn().QueryAsync<T>($"Select * From {Table_Name} Where {cxWhere}");
-            return Qr.ToArray();
+            return cfLoad_cmd(cfGet_cmd_Select());
         }
+
+        public Task<T[]> cfLoad_Where(string cxWhere)
+        {
+            return cfLoad_cmd(cfGet_cmd_Select(cxWhere));
+        }
+
+        public Task<T[]> cfLoad_Where_End(string cxWhere, string cxEnd)
+        {
+            return cfLoad_cmd(cfGet_cmd_Select(cxWhere,cxEnd));
+        }
+
+        public Task<T[]> cfLoad_Select_Where_End(string cxSelect, string cxWhere, string cxEnd)
+        {
+            return cfLoad_cmd(cfGet_cmd_Select(cxSelect, cxWhere, cxEnd));
+        }
+
+
 
         public async Task<F[]> cfLoad_Field<F>(string cxField)
         {
@@ -177,7 +193,44 @@ namespace SQL_DB
 
 
 
-        public string cfGet_Primary_Key()
+        protected string cfGet_cmd_Select(string cxSelect, string cxWhere, string cxEnd)
+        {
+            string cxS = string.IsNullOrWhiteSpace(cxSelect) ? "*" : cxSelect;
+            string cxCmd = $"Select {cxS} From {Table_Name}";
+            if (!string.IsNullOrWhiteSpace(cxWhere)) cxCmd+=$" Where {cxWhere}";
+            if (!string.IsNullOrWhiteSpace(cxEnd)) cxCmd+=" " + cxEnd;
+            return cxCmd;
+        }
+
+        protected string cfGet_cmd_Select(string cxWhere, string cxEnd)
+        {
+            return cfGet_cmd_Select(string.Empty, cxWhere, cxEnd);
+        }
+
+        protected string cfGet_cmd_Select(string cxWhere)
+        {
+            return cfGet_cmd_Select(string.Empty, cxWhere, string.Empty);
+        }
+
+        protected string cfGet_cmd_Select()
+        {
+            return cfGet_cmd_Select(string.Empty, string.Empty, string.Empty);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        protected string cfGet_Primary_Key()
         {
             var Qp = cfGet_Property_Attribute<czaPrimaryKeyAttribute>();
             if(Qp?.Any()??false)

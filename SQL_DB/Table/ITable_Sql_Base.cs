@@ -16,12 +16,13 @@ namespace SQL_DB
         string Table_Name { get; }
         Type Data_Type { get; }
 
-        Task<int> cfClear();
-        //Task<int> cfClear_trunc();
-        Task<int> cfCount();
-        Task<int> cfDrop();
-        string[] cfGet_Data_Fields();
-        string cfGet_Primary_Key();
+        //Task<int> cfClear();
+        //Task<int> cfCount();
+        //Task<int> cfDrop();
+
+        //string cfGet_Primary_Key();
+
+        string[] cfGet_Data_Columns();
     }
 
 

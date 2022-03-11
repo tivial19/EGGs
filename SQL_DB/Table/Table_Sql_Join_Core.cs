@@ -25,37 +25,31 @@ namespace SQL_DB
         }
 
 
-
-        protected Task<T0[]> cfLoad_ALL_Join<T1>(Func<T0, T1, T0> cxFunc_Join)
+        public virtual Task<T0[]> cfLoad_Join_cmd(string cxCmd)
         {
-            return cfLoad_Where_Join<T1>(string.Empty, cxFunc_Join);
-        }
-
-
-        protected async Task<T0[]> cfLoad_Where_Join<T1>(string cxWhere, Func<T0, T1, T0> cxFunc_Join)
-        {
-            var cxT0_Foreigns = cfGet_Foreigns_Keys(Tables_Foreign_Name, 1);
-            string cxCmd = cfGet_Select_Join_cmd(Table_Name, cxT0_Foreigns, cxWhere);
-            var Qr = await _conn().QueryAsync(cxCmd, cxFunc_Join);
-            return Qr.ToArray();
+            throw new NotImplementedException("czTable_Sql_Join_Core have no code cfLoad_Join_cmd USE override in czTable_Sql_Join");
         }
 
 
 
-
-
-        protected Task<T0[]> cfLoad_ALL_Join<T1, T2>(Func<T0, T1, T2, T0> cxFunc_Join)
+        public Task<T0[]> cfLoad_Join_ALL()
         {
-            return cfLoad_Where_Join<T1,T2>(string.Empty, cxFunc_Join);
+            return cfLoad_Join_cmd(cfGet_cmd_Join());
         }
 
-
-        protected async Task<T0[]> cfLoad_Where_Join<T1, T2>(string cxWhere, Func<T0, T1, T2, T0> cxFunc_Join)
+        public Task<T0[]> cfLoad_Join_Where(string cxWhere)
         {
-            var cxT0_Foreigns = cfGet_Foreigns_Keys(Tables_Foreign_Name, 2);
-            string cxCmd = cfGet_Select_Join_cmd(Table_Name, cxT0_Foreigns, cxWhere);
-            var Qr = await _conn().QueryAsync(cxCmd, cxFunc_Join);
-            return Qr.ToArray();
+            return cfLoad_Join_cmd(cfGet_cmd_Join(cxWhere));
+        }
+
+        public Task<T0[]> cfLoad_Join_Where_End(string cxWhere, string cxCmd_End)
+        {
+            return cfLoad_Join_cmd(cfGet_cmd_Join(cxWhere, cxCmd_End));
+        }
+
+        public Task<T0[]> cfLoad_Select_Join_Where(string cxSelect, string cxWhere, string cxCmd_End)
+        {
+            return cfLoad_Join_cmd(cfGet_cmd_Join(cxSelect, cxWhere, cxCmd_End));
         }
 
 
@@ -65,71 +59,96 @@ namespace SQL_DB
 
 
 
-
-
-
-
-
-        protected czForeign_Data[] cfGet_Foreigns_Keys(string[] cxTables_Foreign_Names, int cxCount_Need)
+        protected string cfGet_cmd_Join(string cxSelect, string cxWhere, string cxEnd)
         {
-            if (cxTables_Foreign_Names?.Any()??false && cxTables_Foreign_Names.Length==cxCount_Need)
+            string cxJoins = cfGet_Joins_cmd();
+            return cfGet_Select_Join_Where_End_cmd(cxSelect, Table_Name, cxJoins, cxWhere, cxEnd);
+        }
+
+        protected string cfGet_cmd_Join(string cxWhere, string cxEnd)
+        {
+            return cfGet_cmd_Join(string.Empty, cxWhere, cxEnd);
+        }
+
+        protected string cfGet_cmd_Join(string cxWhere)
+        {
+            return cfGet_cmd_Join(string.Empty, cxWhere, string.Empty);
+        }
+
+        protected string cfGet_cmd_Join()
+        {
+            return cfGet_cmd_Join(string.Empty, string.Empty, string.Empty);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private string cfGet_Joins_cmd()
+        {
+            var cxForeign_Data = cfGet_Foreigns_Keys(Tables_Foreign_Name);
+            return cfGet_Joins_cmd(Table_Name, cxForeign_Data);
+
+
+            czForeign_Data[] cfGet_Foreigns_Keys(string[] cxTables_Foreign_Names)
             {
-                var Qf = cxTables_Foreign_Names.Select(s => cfGet_Foreign_Key_Id(s)).ToArray();
-                czForeign_Data[] cxR = new czForeign_Data[cxCount_Need];
-                for (int i = 0; i < cxTables_Foreign_Names.Length; i++)
+                if (cxTables_Foreign_Names?.Any()??false)
                 {
-                    var cxForeign = cfGet_Foreign_Key_Id(cxTables_Foreign_Names[i]);
-                    cxR[i]= new czForeign_Data(cxTables_Foreign_Names[i],cxForeign.Foreign_Key,cxForeign.Foreign_Id);
+                    int cxCount_Need = cxTables_Foreign_Names.Length;
+
+                    var Qf = cxTables_Foreign_Names.Select(s => cfGet_Foreign_Key_Id(s)).ToArray();
+                    czForeign_Data[] cxR = new czForeign_Data[cxCount_Need];
+                    for (int i = 0; i < cxTables_Foreign_Names.Length; i++)
+                    {
+                        var cxForeign = cfGet_Foreign_Key_Id(cxTables_Foreign_Names[i]);
+                        cxR[i]= new czForeign_Data(cxTables_Foreign_Names[i], cxForeign.Foreign_Key, cxForeign.Foreign_Id);
+                    }
+                    return cxR;
                 }
-                return cxR;
+                else throw new Exception("czTable_Sql_Join_Core cfLoad_Where_Join cxTables_Foreign empty or wrong format");
             }
-            else throw new Exception("czTable_Sql_Join_Core cfLoad_Where_Join cxTables_Foreign empty or wrong format");
+
+            static string cfGet_Joins_cmd(string cxTable_Main, czForeign_Data[] cxForeign_Data)
+            {
+                string[] cxJoins = new string[cxForeign_Data.Length];
+                for (int i = 0; i < cxJoins.Length; i++)
+                    cxJoins[i]=cfGet_Join(cxTable_Main, cxForeign_Data[i].Foreign_Key, cxForeign_Data[i].Foreign_Table_Name, cxForeign_Data[i].Foreign_Table_Id);
+
+                return string.Join(" ", cxJoins);
+
+
+
+                static string cfGet_Join(string cxMain_Table_Name, string cxMain_Table_Forgn_Key, string cxForeign_Table_Name, string cxForeign_Table_id)
+                {
+                    string cxFormat = "Join {2} on {0}.{1} = {2}.{3}";
+                    return string.Format(cxFormat, cxMain_Table_Name, cxMain_Table_Forgn_Key, cxForeign_Table_Name, cxForeign_Table_id);
+                }
+            }
         }
 
 
 
 
 
-        static string cfGet_Select_Join_cmd(string cxTable_Name, czForeign_Data[] cxForeign_Data, string cxWhere)
+        static string cfGet_Select_Join_Where_End_cmd(string cxSelect, string cxTable_Name, string cxJoin, string cxWhere, string cxEnd)
         {
-            string cxCmd = $"Select * From [{cxTable_Name}] T0 ";
-            string cxJoins = cfGet_Joins_cmd(cxForeign_Data);
-            cxCmd+=cxJoins;
+            if (string.IsNullOrWhiteSpace(cxTable_Name)) throw new Exception("czTable_Sql_Join_Core cfGet_Select_Join_Where_End_cmd cxTable_Name==null");
+            if (string.IsNullOrWhiteSpace(cxJoin)) throw new Exception("czTable_Sql_Join_Core cfGet_Select_Join_Where_End_cmd cxJoin==null");
+
+            string cxS = string.IsNullOrWhiteSpace(cxSelect) ? "*" : cxSelect;
+            string cxCmd = $"Select {cxS} From {cxTable_Name} {cxJoin}";
             if (!string.IsNullOrWhiteSpace(cxWhere)) cxCmd+=$" Where {cxWhere}";
+            if (!string.IsNullOrWhiteSpace(cxEnd)) cxCmd+=" " + cxEnd;
             return cxCmd;
         }
-
-        static string cfGet_Joins_cmd(czForeign_Data[] cxForeign_Data)
-        {
-            // join [Foreign_Table_Name] on [Foreign_Key]=[Foreign_Table_Id]
-            // T0 T1 T2 
-            const string ccTable_Class_Start = "T";
-            const string ccTable_Class_Main = ccTable_Class_Start + "0";
-            string cxTable_Class_Foreign;
-
-            string[] cxJoins = new string[cxForeign_Data.Length];
-
-            for (int i = 0; i < cxForeign_Data.Length; i++)
-            {
-                cxTable_Class_Foreign=ccTable_Class_Start+(i+1).ToString();//first cxTable_Class_Foreign="T1"
-                cxJoins[i]=cfGet_Join(cxForeign_Data[i].Foreign_Table_Name, cxForeign_Data[i].Foreign_Key, cxForeign_Data[i].Foreign_Table_Id, ccTable_Class_Main, cxTable_Class_Foreign); 
-            }
-            return string.Join(" ", cxJoins);
-
-
-            static string cfGet_Join(string cxForeign_Table_Name, string cxMain_Table_Forgn_Key, string cxForeign_Table_id, string cxMain_Table_Class, string cxForeign_Table_Class)
-            {
-                string cxFormat = "Join [{0}] {4} on {3}.{1} = {4}.{2}";
-                return string.Format(cxFormat, cxForeign_Table_Name, cxMain_Table_Forgn_Key, cxForeign_Table_id, cxMain_Table_Class, cxForeign_Table_Class);
-            }
-        }
-
-
-
-
-
-
-
 
 
 

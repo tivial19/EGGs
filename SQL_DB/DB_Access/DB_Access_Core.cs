@@ -23,6 +23,22 @@ namespace SQL_DB
             await cfCreate_Tables_ALL();
         }
 
+        public string cfGet_Tables_Colums_text()
+        {
+            var cxData = cfGet_Tables_Colums();
+            List<string> cxL = new List<string>();
+            foreach (var d in cxData) 
+            {
+                cxL.Add($"          Таблица: {d.Table_Name}");
+                cxL.AddRange(d.Colums);
+            }
+            return string.Join(Environment.NewLine, cxL);
+        }
+
+        public (string Table_Name, string[] Colums)[] cfGet_Tables_Colums()
+        {
+            return cfGet_All_Tables().Select(t => (t.Table_Name, t.cfGet_Data_Columns())).ToArray();
+        }
 
 
 
@@ -30,8 +46,7 @@ namespace SQL_DB
 
 
 
-
-//From Connection
+        //From Connection
 
         public Task<string> cfGet_Server_Info()
         {

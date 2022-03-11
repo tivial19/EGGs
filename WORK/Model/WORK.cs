@@ -242,8 +242,7 @@ namespace cpWORK
 
         public async Task cfShow_Data_Fields()
         {
-            string[] cxFields = _DB.cfGet_Data_Fields();
-            await _APP.cfMSG_OK(string.Join(Environment.NewLine, cxFields), "Поля данных:");
+            await _APP.cfMSG_OK(_DB.cfGet_Tables_Colums_text(), "Поля данных:");
         }
 
 
